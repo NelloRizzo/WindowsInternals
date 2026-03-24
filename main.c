@@ -18,9 +18,9 @@ void print_service(service_entry *e)
 
 void print_memory(memory_region *region, memory_scan_stats *stats)
 {
-    printf("-------------------------------------");
-    printf(" Region base address:  %016llX (%llukb)", region->base, KB(region->bytes_read));
-    printf("-------------------------------------");
+    print_separator('-', 50);
+    printf(" Region base address:  %016llX (%llukb)\n", region->base, KB(region->bytes_read));
+    print_separator('-', 50);
     SIZE_T i;
     for (i = 0; i < region->bytes_read; i += 16)
     {
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
         if (target)
             free(target);
     }
-    int r;
-    scanf("%d", &r);
+    printf("Done\n");
+    getchar();
     return 0;
 }
