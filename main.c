@@ -16,7 +16,7 @@ void print_service(service_entry *e)
            e->name, e->display_name, e->pid);
 }
 
-void print_memory(memory_region *region, memory_scan_stats *stats)
+void print_memory(memory_region *region, memory_scan_stats *) // le statistiche non sono utilizzate in questa funzione
 {
     print_separator('-', 50);
     printf(" Region base address:  %016llX (%llukb)\n", region->base, KB(region->bytes_read));
