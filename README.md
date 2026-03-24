@@ -54,6 +54,8 @@ process_analyzer.exe 1234
 
 # Hex dump della memoria di un PID
 process_analyzer.exe @1234
+# Hex dump della memoria su un file di testo
+process_analyzer.exe @1234 > output.txt
 ```
 
 ## API Windows utilizzate
