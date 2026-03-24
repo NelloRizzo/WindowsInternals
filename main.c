@@ -125,8 +125,8 @@ int main(int argc, char *argv[])
         process_list_free(list);
         if (target)
             free(target);
+        printf("Done\n");
+        getchar();
     }
-    printf("Done\n");
-    getchar();
     return 0;
 }
