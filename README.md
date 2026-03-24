@@ -56,6 +56,16 @@ process_analyzer.exe 1234
 process_analyzer.exe @1234
 # Hex dump della memoria su un file di testo
 process_analyzer.exe @1234 > output.txt
+
+```
+> Il programma non termina immediatamente, ma solo dopo l'inserimento di un nuemro e la pressione del tasto `INVIO` al fine di consentire l'esecuzione di un primo test:
+
+```batch
+# In una finestra lanciare il comando:
+process_analyzer.exe process_analyzer
+# quindi leggere il `pid` ed eseguire, in un'altra finestra:
+process_analyzer.exe @pid_trovato > output.txt
+# per ottenere il dump della memoria nel file `output.txt`
 ```
 
 ## API Windows utilizzate
