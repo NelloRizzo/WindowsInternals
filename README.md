@@ -58,7 +58,7 @@ process_analyzer.exe @1234
 process_analyzer.exe @1234 > output.txt
 
 ```
-> Il programma non termina immediatamente, ma solo dopo l'inserimento di un nuemro e la pressione del tasto `INVIO` al fine di consentire l'esecuzione di un primo test:
+> Il programma non termina immediatamente, ma solo dopo l'inserimento di un numero e la pressione del tasto `INVIO` al fine di consentire l'esecuzione di un primo test:
 
 ```batch
 # In una finestra lanciare il comando:
