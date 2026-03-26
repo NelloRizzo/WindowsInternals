@@ -276,6 +276,81 @@ memory_scan_stats *memory_scan(DWORD pid, region_callback callback)
     return stats;
 }
 
+void free_search_result(search_result *result)
+{
+    if (result->search_pattern)
+    {
+        free(result->search_pattern);
+    }
+    free(result);
+}
+
+search_result *pattern_bytes_search(ADDR start_address, DWORD pid, BYTE8 *pattern, SIZE_T pattern_len)
+{
+    search_result *result = malloc(sizeof(search_result));
+    if (!result)
+        return NULL;
+    result->base_address = 0;
+    result->pattern_len = pattern_len;
+    result->pid = pid;
+    result->search_pattern = malloc(pattern_len);
+    if (!result->search_pattern)
+    {
+        free(result);
+        return NULL;
+    }
+    result->timestamp = time(NULL);
+    memcpy(result->search_pattern, pattern, pattern_len);
+    HANDLE handle = OpenProcess(PROCESS_VM_READ | PROCESS_QUERY_INFORMATION, 0, pid);
+    if (!handle)
+    {
+        free_search_result(result);
+        return NULL;
+    }
+    MEMORY_BASIC_INFORMATION mbi;
+    ADDR addr = start_address;
+    while (VirtualQueryEx(handle, (LPCVOID)(ULONG_PTR)addr, &mbi, sizeof(mbi)) > 0 && result->base_address == 0)
+    {
+        if (mbi.State == MEM_COMMIT && !(mbi.Protect & PAGE_NOACCESS) && !(mbi.Protect & PAGE_GUARD))
+        {
+            memory_region region;
+            region.base = (ADDR)(ULONG_PTR)mbi.BaseAddress;
+            region.size = mbi.RegionSize;
+            region.protect = mbi.Protect;
+            region.type = mbi.Type;
+            region.data = malloc(mbi.RegionSize);
+            region.bytes_read = 0;
+
+            ReadProcessMemory(handle, mbi.BaseAddress, region.data, mbi.RegionSize, &region.bytes_read);
+            if (region.data && pattern_len <= region.bytes_read)
+            {
+                for (size_t i = 0; result->base_address == 0 && i < region.bytes_read - pattern_len; ++i)
+                {
+                    if (memcmp(region.data + i, pattern, pattern_len) == 0)
+                    {
+                        result->base_address = region.base + i;
+                    }
+                }
+                free(region.data);
+                region.data = NULL;
+            }
+        }
+        addr += mbi.RegionSize;
+    }
+    CloseHandle(handle);
+    if (result->base_address == 0)
+    {
+        free_search_result(result);
+        return NULL;
+    }
+    return result;
+}
+
+search_result *pattern_chars_search(ADDR start_address, DWORD pid, char *pattern)
+{
+    return pattern_bytes_search(start_address, pid, (BYTE8 *)pattern, strlen(pattern));
+}
+
 /* Abilita i codici colore ANSI sulla console Windows */
 void enable_ansi(void)
 {

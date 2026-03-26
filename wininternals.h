@@ -31,16 +31,6 @@ typedef struct
     SIZE_T working_set; /* byte in RAM */
 } ProcessInfo;
 
-/* Regione di memoria di un processo */
-typedef struct
-{
-    ADDR base;
-    SIZE_T size;
-    DWORD state;   /* MEM_COMMIT, MEM_RESERVE, MEM_FREE */
-    DWORD type;    /* MEM_IMAGE, MEM_MAPPED, MEM_PRIVATE */
-    DWORD protect; /* PAGE_READONLY, PAGE_READWRITE, ecc. */
-} MemRegion;
-
 /* ============================================================
  *  Costanti e macro utili
  * ============================================================ */
@@ -148,9 +138,20 @@ typedef struct
     time_t timestamp;
 } memory_scan_stats;
 
+typedef struct
+{
+    DWORD pid;
+    time_t timestamp;
+    ADDR base_address;
+    BYTE8 *search_pattern;
+    SIZE_T pattern_len;
+} search_result;
+
 typedef void (*region_callback)(memory_region *region, memory_scan_stats *stats);
 memory_scan_stats *memory_scan(DWORD pid, region_callback callback);
-
+search_result *pattern_bytes_search(ADDR start_address, DWORD pid, BYTE8 *pattern, SIZE_T pattern_len);
+search_result *pattern_chars_search(ADDR start_address, DWORD pid, char *pattern);
+void free_search_result(search_result *result);
 /* ============================================================
  *  Utils
  * ============================================================ */
