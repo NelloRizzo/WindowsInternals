@@ -28,12 +28,12 @@ typedef struct
 static void print_usage(void)
 {
     printf(COL_BOLD "Uso:\n" COL_RESET);
-    printf("  process_analyzer.exe " COL_CYAN "-name" COL_RESET " <nome>              Lista processi per nome\n");
-    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid>               Info processo + servizi + scan\n");
-    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid> " COL_CYAN "-scan" COL_RESET "           Hex dump memoria\n");
-    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid> " COL_CYAN "-scan" COL_RESET " \"stringa\"  Cerca stringa\n");
-    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid> " COL_CYAN "-scan -str" COL_RESET " str  Cerca stringa\n");
-    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid> " COL_CYAN "-scan" COL_RESET " FF 4D 5A  Cerca byte hex\n");
+    printf("  process_analyzer.exe " COL_CYAN "-name" COL_RESET " <nome>                   Lista processi per nome\n");
+    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid>                     Info processo + servizi + scan\n");
+    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid> " COL_CYAN "-scan" COL_RESET "               Hex dump memoria\n");
+    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid> " COL_CYAN "-scan" COL_RESET " \"stringa\"     Cerca stringa\n");
+    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid> " COL_CYAN "-scan -str" COL_RESET " str      Cerca stringa\n");
+    printf("  process_analyzer.exe " COL_CYAN "-pid" COL_RESET " <pid> " COL_CYAN "-scan" COL_RESET " FF 4D 5A      Cerca byte hex\n");
 }
 
 static int parse_args(int argc, char *argv[], args *out)
